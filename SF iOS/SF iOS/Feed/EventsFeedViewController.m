@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_END
 @implementation EventsFeedViewController
 
 #define kSEARCHBARHEIGHT 32
+#define kSEARCHBARMARGIN 12
 #define kTABLEHEADERHEIGHT (2 * kSEARCHBARHEIGHT)
 
 - (instancetype)initWithDataSource:(EventDataSource *)dataSource {
@@ -97,7 +98,7 @@ NS_ASSUME_NONNULL_END
     
     [self registerForPreviewingWithDelegate:self sourceView:self.tableView];
     
-    CGRect searchBarRect = CGRectMake(0, 0, self.view.frame.size.width, kSEARCHBARHEIGHT);
+    CGRect searchBarRect = CGRectMake(kSEARCHBARMARGIN, 0, self.view.frame.size.width-(kSEARCHBARMARGIN*2), kSEARCHBARHEIGHT);
     self.searchBar = [[UISearchBar alloc] initWithFrame:searchBarRect];
     self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.searchBar.placeholder = NSLocalizedString(@"Filter", @"Prompt to search for event names. Here, `Filter` is a joke in English because people filter coffee and this list can be filtered by a term.");
