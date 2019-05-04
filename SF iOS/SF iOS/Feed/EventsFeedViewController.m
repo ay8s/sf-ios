@@ -101,7 +101,6 @@ NS_ASSUME_NONNULL_END
     self.searchBar = [[UISearchBar alloc] initWithFrame:searchBarRect];
     self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.searchBar.placeholder = NSLocalizedString(@"Filter", @"Prompt to search for event names. Here, `Filter` is a joke in English because people filter coffee and this list can be filtered by a term.");
-    self.searchBar.showsCancelButton = true;
     self.searchBar.delegate = self;
     
     // TODO: There’s probably a better way of doing this that doesn’t require a new view
@@ -237,6 +236,7 @@ NS_ASSUME_NONNULL_END
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     self.tableView.scrollEnabled = false;
+    [self.searchBar setShowsCancelButton:YES animated:YES];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
@@ -249,6 +249,7 @@ NS_ASSUME_NONNULL_END
     self.tableView.scrollEnabled = true;
     [searchBar resignFirstResponder];
     self.dataSource.searchQuery = searchBar.text;
+    [self.searchBar setShowsCancelButton:NO animated:YES];
     [self.tableView reloadData];
     [self handleFilterResults];
 }
