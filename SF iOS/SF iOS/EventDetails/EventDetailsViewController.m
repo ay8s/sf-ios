@@ -60,6 +60,13 @@ NS_ASSUME_NONNULL_END
     self.view.backgroundColor = [UIColor whiteColor];
     self.extendedLayoutIncludesOpaqueBars = true;
     
+    // Show Share button for events in the future.
+    if(self.event.date.isInFuture){
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                                           target:self
+                                                                                           action:@selector(share)];
+    }
+    
     UILabel *titleLabel = [UILabel new];
     titleLabel.text = self.event.name;
     titleLabel.font = [UIFont systemFontOfSize:28 weight:UIFontWeightSemibold];
@@ -158,6 +165,21 @@ NS_ASSUME_NONNULL_END
             }
         }];
     }];
+}
+
+// MARK: Share
+
+- (void)share {
+    // TODO: Use the group name and coffeecoffeecoffee.coffee url.
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    
+    NSString *text = [NSString stringWithFormat:@"Join us at %@ for coffee, kicking off %@.", self.event.venueName, [formatter stringFromDate:self.event.date]];
+    NSArray *items = @[text, self.event.venueURL];
+    UIActivityViewController *shareSheet = [[UIActivityViewController alloc] initWithActivityItems:items
+                                                                             applicationActivities:nil];
+    [self presentViewController:shareSheet animated:true completion:nil];
 }
 
 @end
