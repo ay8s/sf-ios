@@ -11,7 +11,6 @@
 #import "FeedItemCell.h"
 #import "FeedItem.h"
 #import "UserLocation.h"
-#import "UIViewController+StatusBarBackground.h"
 #import "UIImage+URL.h"
 #import "ImageStore.h"
 #import "NSUserDefaults+Settings.h"
@@ -215,7 +214,7 @@ NS_ASSUME_NONNULL_END
     self.tableView.tableHeaderView.backgroundColor = UIColor.whiteColor;
 
     [self configureNoResultsView];
-    [self addStatusBarBlurBackground];
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                                            target:self
                                                                                            action:@selector(share)];
