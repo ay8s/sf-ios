@@ -23,7 +23,7 @@
 #import "EventFeedDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
-@interface EventsFeedViewController () <UITableViewDataSource, UITableViewDelegate, UIViewControllerPreviewingDelegate, UISearchBarDelegate>
+@interface EventsFeedViewController () <UITableViewDataSource, UITableViewDelegate, UIViewControllerPreviewingDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
 
 @property (nonatomic, nonnull) EventDataSource *dataSource;
 @property (nonatomic, nonnull) EventFeedDelegate *feedDelegate;
@@ -32,17 +32,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) ImageStore *imageStore;
 @property (nonatomic) NSOperationQueue *imageFetchQueue;
 @property (nullable, nonatomic) UserLocation *userLocationService;
-@property (nonatomic) UISearchBar *searchBar;
 @property (nonatomic) UIView *noResultsView;
 @property (nonatomic) UIButton *notificationSettingButton;
+@property (nonatomic) UISearchController *searchController;
+
 @end
 NS_ASSUME_NONNULL_END
 
 @implementation EventsFeedViewController
-
-#define kSEARCHBARHEIGHT 60
-#define kSEARCHBARMARGIN 12
-#define kTABLEHEADERHEIGHT (2 * kSEARCHBARHEIGHT)
 
 - (instancetype)initWithDataSource:(EventDataSource *)eventDataSource tableView:(UITableView *)tableView {
     if (self = [super initWithNibName:nil bundle:nil]) {
@@ -174,9 +171,10 @@ NS_ASSUME_NONNULL_END
 
 - (void)configureNoResultsView {
     self.noResultsView = [[UIView alloc] init];
-    self.noResultsView.frame = CGRectMake(0, (1.5 * kTABLEHEADERHEIGHT), self.tableView.frame.size.width, (self.view.bounds.size.height - (4 * kTABLEHEADERHEIGHT)));
+    self.noResultsView.frame = CGRectMake(0, 0, self.tableView.frame.size.width, self.view.bounds.size.height);
     [self.noResultsView setHidden:true];
     [self.view addSubview:self.noResultsView];
+    
     CGRect labelFrame = CGRectMake(0, 0, self.view.frame.size.width, 100);
     UILabel *noResultsLabel = [[UILabel alloc] initWithFrame:labelFrame];
     noResultsLabel.text = NSLocalizedString(@"No events", @"Displayed when no Event names match the given search term");
@@ -201,19 +199,21 @@ NS_ASSUME_NONNULL_END
 
     [self registerForPreviewingWithDelegate:self sourceView:self.tableView];
     
-    CGRect searchBarRect = CGRectMake(kSEARCHBARMARGIN,
-                                      0,
-                                      self.view.frame.size.width-(kSEARCHBARMARGIN*2),
-                                      kSEARCHBARHEIGHT);
-    [self setupNotificationsButton];
-    self.searchBar = [[UISearchBar alloc] initWithFrame:searchBarRect];
-    self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
-    self.searchBar.placeholder = NSLocalizedString(@"Filter", @"Prompt to search for event names. Here, `Filter` is a joke in English because people filter coffee and this list can be filtered by a term.");
-    self.searchBar.delegate = self;
-
-    self.tableView.tableHeaderView = self.searchBar;
-    self.tableView.tableHeaderView.backgroundColor = UIColor.whiteColor;
-
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.searchBar.placeholder = @"Filter";
+    [self.searchController.searchBar sizeToFit];
+    self.searchController.delegate = self;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.searchBar.delegate = self;
+    self.navigationItem.searchController = self.searchController;
+    self.navigationItem.hidesSearchBarWhenScrolling = YES;
+    self.definesPresentationContext = YES;
+    self.searchController.hidesNavigationBarDuringPresentation = NO;
+    
+    // Content Inset was causing some jank when loading SF Coffee, others were fine.
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 16)];
+    
     [self configureNoResultsView];
     [self addStatusBarBlurBackground];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
@@ -304,7 +304,7 @@ NS_ASSUME_NONNULL_END
 
 - (void)handleRefresh {
     self.dataSource.searchQuery = @"";
-    self.searchBar.text = @"";
+    self.searchController.searchBar.text = @"";
     [self.tableView reloadData];
     [self handleFilterResults];
     [self.tableView.refreshControl endRefreshing];
@@ -330,6 +330,15 @@ NS_ASSUME_NONNULL_END
     [self presentViewController:viewControllerToCommit animated:true completion:nil];
 }
 
+
+//MARK: - Search Controller
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    self.dataSource.searchQuery = searchController.searchBar.text;
+    [self.tableView reloadData];
+    [self handleFilterResults];
+}
+
 //MARK: - UISearchBarDelegate
 - (void)handleFilterResults {
     if (self.dataSource.numberOfItems < 1) {
@@ -341,41 +350,17 @@ NS_ASSUME_NONNULL_END
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-    self.tableView.scrollEnabled = false;
-    [self.searchBar setShowsCancelButton:YES animated:YES];
-}
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    self.dataSource.searchQuery = searchText;
-    [self.tableView reloadData];
-    [self handleFilterResults];
-}
-
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-    self.tableView.scrollEnabled = true;
-    [searchBar resignFirstResponder];
-    self.dataSource.searchQuery = searchBar.text;
-    [self.searchBar setShowsCancelButton:NO animated:YES];
-    [self.tableView reloadData];
-    [self handleFilterResults];
+    [searchBar setShowsCancelButton:YES animated:YES];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    self.tableView.scrollEnabled = true;
+    [searchBar setText:@""];
+    [searchBar setShowsCancelButton:NO];
     [searchBar resignFirstResponder];
-    self.dataSource.searchQuery = @"";
-    [self.tableView reloadData];
-    [self handleFilterResults];
-    searchBar.text = @"";
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    self.tableView.scrollEnabled = true;
     [searchBar resignFirstResponder];
-    self.dataSource.searchQuery = searchBar.text;
-    [self.tableView reloadData];
-    [self handleFilterResults];
 }
 
 
@@ -437,8 +422,7 @@ static CGFloat const eventCellAspectRatio = 1.352;
     }];
 }
 
-- (void)didMoveToParentViewController:(UIViewController *)parent
-{
+- (void)didMoveToParentViewController:(UIViewController *)parent {
     // parent is nil if this view controller was removed
     if (!parent) {
         [[NSUserDefaults standardUserDefaults] setLastViewedGroupID:nil];
