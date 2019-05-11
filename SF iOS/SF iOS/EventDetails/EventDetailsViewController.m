@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface EventDetailsViewController ()
 
 @property (nonatomic) Event *event;
+@property (nonatomic) NSString *groupName;
 @property (nonatomic) MapView *mapView;
 @property (nonatomic) UIStackView *containerStack;
 @property (nonatomic) TravelTimeService *travelTimeService;
@@ -34,9 +35,10 @@ NS_ASSUME_NONNULL_END
 
 @implementation EventDetailsViewController
 
-- (instancetype)initWithEvent:(Event *)event userLocationService:(UserLocation *)userLocation {
+- (instancetype)initWithEvent:(Event *)event groupName:(nullable NSString *)groupName userLocationService:(nullable UserLocation *)userLocation {
     if (self = [super initWithNibName:nil bundle:nil]) {
         self.event = event;
+        self.groupName = groupName;
         self.travelTimeService = [TravelTimeService new];
         self.userLocationService = userLocation;
     }
@@ -45,12 +47,12 @@ NS_ASSUME_NONNULL_END
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     NSAssert(false, @"Use -initWithEvent");
-    return [self initWithEvent:[Event new] userLocationService:[UserLocation new]];
+    return [self initWithEvent:[Event new] groupName:nil userLocationService:[UserLocation new]];
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     NSAssert(false, @"Use -initWithEvent");
-    return [self initWithEvent:[Event new] userLocationService:[UserLocation new]];
+    return [self initWithEvent:[Event new] groupName:nil userLocationService:[UserLocation new]];
 }
 
 - (void)viewDidLoad {

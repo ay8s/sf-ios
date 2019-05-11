@@ -368,7 +368,7 @@ NS_ASSUME_NONNULL_END
 
 - (EventDetailsViewController *)eventDetailsViewControllerForEventAtIndexPath:(NSIndexPath *)indexPath {
     Event *event = [self.dataSource eventAtIndex:indexPath.row];
-    return [[EventDetailsViewController alloc] initWithEvent:event userLocationService:self.userLocationService];
+    return [[EventDetailsViewController alloc] initWithEvent:event groupName:self.dataSource.groupName userLocationService:self.userLocationService];
 }
 
 //MARK: - Cell Dimensions
