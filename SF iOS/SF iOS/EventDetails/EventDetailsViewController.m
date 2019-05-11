@@ -15,7 +15,6 @@
 #import "TravelTimeService.h"
 #import "TravelTimesView.h"
 #import "DirectionsRequest.h"
-#import "UIViewController+StatusBarBackground.h"
 #import "Location.h"
 @import MapKit;
 
@@ -114,13 +113,11 @@ NS_ASSUME_NONNULL_END
     
     [self.view addSubview:self.containerStack];
     // Extend under status bar
-    [self.containerStack.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:-self.statusBarHeight].active = true;
+    [self.containerStack.topAnchor constraintEqualToAnchor:self.view.topAnchor].active = true;
     [self.containerStack.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = true;
     [self.containerStack.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = true;
     [self.containerStack.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = true;
-        
-    [self addStatusBarBlurBackground];
-    
+            
     [self.mapView setDestinationToLocation:self.event.location.location withAnnotationGlyph:self.event.annotationGlyph];
     [self getTravelTimes];
 }

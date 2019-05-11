@@ -80,7 +80,6 @@
 		C8CC49431F330F360064B03E /* AsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CC49421F330F360064B03E /* AsyncOperation.m */; };
 		C8CC49491F33B9150064B03E /* TravelTimesView.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CC49481F33B9150064B03E /* TravelTimesView.m */; };
 		C8CC494C1F33BA420064B03E /* TravelTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CC494B1F33BA420064B03E /* TravelTimeView.m */; };
-		C8CEC9841F3AB342002A8D88 /* UIViewController+StatusBarBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CEC9831F3AB342002A8D88 /* UIViewController+StatusBarBackground.m */; };
 		CED16D5C64A6DD2CE70F99F8 /* libPods-SF iOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 669D4943CDB7B5B8CBC1B27E /* libPods-SF iOSTests.a */; };
 		E0037C5422A4AF58E1158B64 /* libPods-SF iOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 238F3C1035E918F044128123 /* libPods-SF iOSTests.a */; };
 		E28D38E12267B259004266BA /* BackgroundFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = E28D38E02267B259004266BA /* BackgroundFetcher.m */; };
@@ -255,8 +254,6 @@
 		C8CC49481F33B9150064B03E /* TravelTimesView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TravelTimesView.m; sourceTree = "<group>"; };
 		C8CC494A1F33BA420064B03E /* TravelTimeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TravelTimeView.h; sourceTree = "<group>"; };
 		C8CC494B1F33BA420064B03E /* TravelTimeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TravelTimeView.m; sourceTree = "<group>"; };
-		C8CEC9821F3AB342002A8D88 /* UIViewController+StatusBarBackground.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+StatusBarBackground.h"; sourceTree = "<group>"; };
-		C8CEC9831F3AB342002A8D88 /* UIViewController+StatusBarBackground.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+StatusBarBackground.m"; sourceTree = "<group>"; };
 		C8E6A3EB1F3256180098339C /* EventDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventDetailsViewController.h; sourceTree = "<group>"; };
 		C8E6A3EC1F3256180098339C /* EventDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventDetailsViewController.m; sourceTree = "<group>"; };
 		E28D38DF2267B259004266BA /* BackgroundFetcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackgroundFetcher.h; sourceTree = "<group>"; };
@@ -437,7 +434,6 @@
 			isa = PBXGroup;
 			children = (
 				19DD32F2225B293600C0EE5A /* Settings */,
-				C8CEC9811F3AB31D002A8D88 /* StatusBarBackground */,
 				C8CC49401F330F1E0064B03E /* Concurrency */,
 				C8CC49321F32A70A0064B03E /* Application */,
 				C8CC49291F3264420064B03E /* MapCameraOverlookingLocations */,
@@ -677,15 +673,6 @@
 			path = Concurrency;
 			sourceTree = "<group>";
 		};
-		C8CEC9811F3AB31D002A8D88 /* StatusBarBackground */ = {
-			isa = PBXGroup;
-			children = (
-				C8CEC9821F3AB342002A8D88 /* UIViewController+StatusBarBackground.h */,
-				C8CEC9831F3AB342002A8D88 /* UIViewController+StatusBarBackground.m */,
-			);
-			path = StatusBarBackground;
-			sourceTree = "<group>";
-		};
 		C8E6A3EA1F3255F70098339C /* EventDetails */ = {
 			isa = PBXGroup;
 			children = (
@@ -903,7 +890,6 @@
 				5F3820A1224C90B400862294 /* FeedFetchOperation.m in Sources */,
 				5FECEFD7224ED01800AA8A25 /* UserLocation.m in Sources */,
 				C825164D1F3054F6006B9D7E /* MapView.m in Sources */,
-				C8CEC9841F3AB342002A8D88 /* UIViewController+StatusBarBackground.m in Sources */,
 				C8CC49491F33B9150064B03E /* TravelTimesView.m in Sources */,
 				5F31355D227A546C00751CE5 /* NSString+EventNotifications.m in Sources */,
 				5F2CFE94226914E3004DB902 /* GroupCollectionViewController.m in Sources */,
