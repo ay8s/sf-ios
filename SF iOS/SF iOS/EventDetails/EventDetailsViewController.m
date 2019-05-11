@@ -169,12 +169,13 @@ NS_ASSUME_NONNULL_END
 // MARK: Share
 
 - (void)share {
-    // TODO: Use the group name and coffeecoffeecoffee.coffee url.
+    // TODO: Use coffeecoffeecoffee.coffee url.
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle:NSDateFormatterMediumStyle];
     [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDoesRelativeDateFormatting:YES];
     
-    NSString *text = [NSString stringWithFormat:@"Join us at %@ for coffee, kicking off %@.", self.event.venueName, [formatter stringFromDate:self.event.date]];
+    NSString *text = [NSString stringWithFormat:NSLocalizedString(@"Join us at %@ for %@, kicking off %@.", @"Join us at %@ for %@, kicking off %@."), self.event.venueName, self.groupName, [formatter stringFromDate:self.event.date]];
     NSArray *items = @[text, self.event.venueURL];
     UIActivityViewController *shareSheet = [[UIActivityViewController alloc] initWithActivityItems:items
                                                                              applicationActivities:nil];
