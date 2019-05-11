@@ -375,12 +375,8 @@ NS_ASSUME_NONNULL_END
 
 static CGFloat const eventCellAspectRatio = 1.352;
 
-- (CGFloat)cellHeight{
+- (CGFloat)cellHeight {
     return [UIScreen mainScreen].bounds.size.width * eventCellAspectRatio;
-}
-
-- (CGFloat)groupsHeight {
-    return 80;
 }
 
 //MARK: - First Load
