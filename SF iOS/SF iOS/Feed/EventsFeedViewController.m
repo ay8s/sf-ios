@@ -77,8 +77,8 @@ NS_ASSUME_NONNULL_END
 }
 
 - (void)setupNotificationsButton {
-    UIImage *unsubscribedImage = [UIImage imageNamed:@"button - unsubscribed"];
-    UIImage *subscribedImage = [UIImage imageNamed:@"button - subscribed"];
+    UIImage *unsubscribedImage = [UIImage imageNamed:@"NotificationsDisable"];
+    UIImage *subscribedImage = [UIImage imageNamed:@"NotificationsEnable"];
     self.notificationSettingButton = [[UIButton alloc] initWithFrame:CGRectZero];
     [self.notificationSettingButton addTarget:self
                                        action:@selector(notificationTapped:)
@@ -94,8 +94,8 @@ NS_ASSUME_NONNULL_END
                                                                 constant:-18].active = true;
     [self.notificationSettingButton.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor
                                                                    constant:-18].active = true;
-    [self.notificationSettingButton.heightAnchor constraintEqualToConstant:44].active = true;
-    [self.notificationSettingButton.widthAnchor constraintEqualToConstant:44].active = true;
+    [self.notificationSettingButton.heightAnchor constraintEqualToConstant:53].active = true;
+    [self.notificationSettingButton.widthAnchor constraintEqualToConstant:53].active = true;
     [self updateNotificationButton];
 }
 
@@ -158,7 +158,6 @@ NS_ASSUME_NONNULL_END
                                             handler:^(UIAlertAction * _Nonnull action) {
                                                   [welf updateNotificationButton];
                                               }]];
-    button.hidden = true;
     [self presentViewController:alert animated:true completion:nil];
 }
 
@@ -166,7 +165,6 @@ NS_ASSUME_NONNULL_END
     NSString *groupID = self.dataSource.groupID;
     BOOL isNotificationSet = [[NSUserDefaults standardUserDefaults] notificationSettingForGroupWithID:groupID];
     [self.notificationSettingButton setSelected:isNotificationSet];
-    [self.notificationSettingButton setHidden:false];
 }
 
 - (void)configureNoResultsView {
@@ -198,6 +196,8 @@ NS_ASSUME_NONNULL_END
     [self addConstraints];
 
     [self registerForPreviewingWithDelegate:self sourceView:self.tableView];
+    
+    [self setupNotificationsButton];
     
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchController.searchResultsUpdater = self;
