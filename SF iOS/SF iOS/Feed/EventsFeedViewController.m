@@ -184,7 +184,7 @@ NS_ASSUME_NONNULL_END
 }
 
 - (void)addConstraints {
-    [self.tableView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor].active = true;
+    [self.tableView.topAnchor constraintEqualToAnchor:self.view.topAnchor].active = true;
     [self.tableView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = true;
     [self.tableView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = true;
     [self.tableView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = true;
